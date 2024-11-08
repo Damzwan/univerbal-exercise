@@ -1,12 +1,34 @@
 import { FeaturedMovies } from '@/features/featured-movies';
 import { FeaturedTvSeries } from '@/features/featured-tv-series';
 import { Search } from '@/features/search';
-import { getMoviePoster } from '@/infrastructure/repositories/movie';
+import {
+  getMovieByIdQuery,
+  getMoviePoster,
+} from '@/infrastructure/repositories/movie';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Movie } from 'domain/movie';
-import { Suspense, useState, type ReactNode } from 'react';
-import { Button, View, Text, Image, ScrollView } from 'react-native';
+import { Suspense, useRef, useState, type ReactNode } from 'react';
+import {
+  Button,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useAtom, useAtomValue } from 'jotai';
+import { loadable } from 'jotai/utils';
+import {
+  inputValue$,
+  Suggestion,
+  suggestions$,
+  typeFilter$,
+} from '@/features/search/state';
+import { getTvSeriesByIdQuery } from '@/infrastructure/repositories/tv-series';
+import { Chip } from 'react-native-paper';
 
 // TODO move to another file
 const DetailsScreen = ({ route }) => {
@@ -37,6 +59,101 @@ const DetailsScreen = ({ route }) => {
   );
 };
 
+// TODO separate file
+const SearchScreen = () => {
+  const inputRef = useRef<TextInput>(null);
+  const [inputValue, setInputValue] = useAtom(inputValue$);
+  const [typeFilter, setTypeFilter] = useAtom(typeFilter$);
+  const suggestions = useAtomValue(loadable(suggestions$));
+  const navigation = useNavigation();
+
+  // TODO this can be done better
+  // TODO fix typing
+  const onPressSuggestion = async (item: any) => {
+    setInputValue('');
+    navigation.navigate('details', { movie: item });
+  };
+
+  const handleAddTypeFilter = (type: string) => {
+    const newTypeFilter = typeFilter.includes(type)
+      ? typeFilter.filter((v) => v !== type)
+      : [...typeFilter, type];
+    console.log(newTypeFilter);
+    setTypeFilter(newTypeFilter);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', marginVertical: 10, padding: 4 }}>
+        <Chip
+          icon="movie"
+          onPress={() => handleAddTypeFilter('movie')}
+          selected={typeFilter.includes('movie')}
+          showSelectedCheck={true}
+          style={{ marginRight: 10 }}
+          selectedColor={typeFilter.includes('movie') ? 'green' : 'gray'}
+        >
+          Movies
+        </Chip>
+
+        <Chip
+          icon="television"
+          onPress={() => handleAddTypeFilter('show')}
+          selected={typeFilter.includes('show')}
+          selectedColor={typeFilter.includes('show') ? 'green' : 'gray'}
+          showSelectedCheck={true}
+        >
+          Shows
+        </Chip>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          backgroundColor: '#f5f5f5',
+          borderRadius: 5,
+        }}
+      >
+        <Ionicons name="search" size={24} style={{ marginRight: 10 }} />
+        <TextInput
+          ref={inputRef}
+          style={{ flex: 1, height: 40 }}
+          placeholder="type to search..."
+          onChangeText={setInputValue}
+          value={inputValue}
+        />
+      </View>
+
+      {!inputValue ? null : (
+        <View style={{ flex: 1 }}>
+          {suggestions.state !== 'hasData'
+            ? null
+            : suggestions.data.map((item) => (
+                <TouchableOpacity
+                  key={item.title}
+                  style={{
+                    padding: 10,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#ddd',
+                  }}
+                  onPress={() => onPressSuggestion(item)}
+                >
+                  <Text>{item.title}</Text>
+                </TouchableOpacity>
+              ))}
+          {suggestions.state === 'hasData' && (
+            <View
+              style={{ height: 1, backgroundColor: '#ddd', marginTop: 10 }}
+            />
+          )}
+        </View>
+      )}
+    </View>
+  );
+};
+
 const HomeScreenContent = () => {
   const navigation = useNavigation();
   const handleNavigateToDetails = (movie: Movie) => {
@@ -46,9 +163,9 @@ const HomeScreenContent = () => {
   return (
     <ScrollView>
       <View>
-        <View style={{ marginBottom: 40 }}>
+        {/* <View style={{ marginBottom: 40 }}>
           <Search />
-        </View>
+        </View> */}
 
         <FeaturedMovies
           style={{ marginBottom: 40 }}
@@ -71,12 +188,28 @@ export default function HomeScreen(): ReactNode {
       <HomeStack.Screen
         name={'home'}
         component={HomeScreenContent}
-        options={{ title: 'Home' }}
+        options={{
+          title: 'Home',
+          headerRight: () => {
+            const navigation = useNavigation();
+            return (
+              <TouchableOpacity onPress={() => navigation.navigate('search')}>
+                <Ionicons name="search" size={24} color="black" />
+              </TouchableOpacity>
+            );
+          },
+        }}
       />
       <HomeStack.Screen
         name="details"
         component={DetailsScreen}
         options={{ title: 'About' }}
+      />
+
+      <HomeStack.Screen
+        name="search"
+        component={SearchScreen}
+        options={{ title: '' }}
       />
     </HomeStack.Navigator>
   );

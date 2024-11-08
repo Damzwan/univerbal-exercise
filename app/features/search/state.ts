@@ -3,19 +3,27 @@ import { findMoviesMatchingQuery } from '@/infrastructure/repositories/movie';
 import { findTvSeriesMatchingQuery } from '@/infrastructure/repositories/tv-series';
 
 export const inputValue$ = atom<string | undefined>();
-
-type Suggestion = { title: string; id: string };
+export const typeFilter$ = atom<string[]>(['show', 'movie']);
 
 export const suggestions$ = atom(async (get, { signal }) => {
   const title = get(inputValue$);
+  const typeFilter = get(typeFilter$)
   if (!title) return [];
+  const result: any[] = []; // TODO typing
 
-  const movies = await findMoviesMatchingQuery(signal, { title });
-  const tvSeries = await findTvSeriesMatchingQuery({ title });
+  console.log(typeFilter)
+  if (typeFilter.includes('movie')) {
+    const movies = await findMoviesMatchingQuery(signal, { title });
+    result.push(...movies);
+  }
 
-  const result: Suggestion[] = [];
+  if (typeFilter.includes('show')){
+    const tvSeries = await findTvSeriesMatchingQuery({ title });
+    result.push(...tvSeries);
+  }
+
+
+  console.log(result)
   return result
-    .concat(movies)
-    .concat(tvSeries)
     .filter((it) => it.title.includes(title));
 });

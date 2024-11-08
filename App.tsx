@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import HomeScreen from '@/screens/home';
 import FavoritesScreen from '@/screens/favorites';
 import TopRatedScreen from '@/screens/top-rated';
@@ -8,7 +8,7 @@ import { AppRoutes, routeIconMapping } from '@/config/routes.config';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { PaperProvider } from 'react-native-paper';
-import { LogBox, View } from 'react-native';
+import { LogBox, TouchableOpacity, View } from 'react-native';
 import { z } from 'zod';
 import { appTheme } from '@/config/theme.config';
 
@@ -56,17 +56,21 @@ export default function App() {
           <Tab.Screen
             name="tab-home"
             component={HomeScreen}
-            options={{ tabBarLabel: () => null, headerShown: false }}
+            options={{
+              headerShown: false,
+              tabBarLabel: () => null,
+            }}
           />
+
           <Tab.Screen
             name="tab-top-rated"
             component={TopRatedScreen}
-            options={{ tabBarLabel: () => null }}
+            options={{ tabBarLabel: () => null, }}
           />
           <Tab.Screen
             name="tab-favorites"
             component={FavoritesScreen}
-            options={{ tabBarLabel: () => null }}
+            options={{ tabBarLabel: () => null, headerShown: false }}
           />
         </Tab.Navigator>
       </NavigationContainer>

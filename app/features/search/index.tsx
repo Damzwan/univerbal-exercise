@@ -35,7 +35,7 @@ export function Search({ style }: SearchProps): ReactNode {
           {suggestions.state !== 'hasData'
             ? null
             : suggestions.data.map((it) => (
-                <View style={searchStyles.suggestionEntry}>
+                <View style={searchStyles.suggestionEntry} key={it.title}>
                   <Text>{it.title}</Text>
                 </View>
               ))}
@@ -60,5 +60,7 @@ const searchStyles = StyleSheet.create({
     borderColor: 'yellow',
   },
 
-  suggestionEntry: {},
+  suggestionEntry: {
+    margin: 10
+  },
 });
