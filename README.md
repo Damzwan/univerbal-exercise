@@ -39,10 +39,10 @@ Don't forget to give us access to the repository by either making it public or i
 
 ### Search
 
-- [ ] The search suggestions below are not being displayed correctly
-- [ ] Pressing on a list entry should open a screen with a movie or a TV series,
+- [x] The search suggestions below are not being displayed correctly
+- [x] Pressing on a list entry should open a screen with a movie or a TV series,
 - [ ] Sending search requests is not optimal
-- [ ] Search result displays all TV series and movies. Add additional filters.
+- [x] Search result displays all TV series and movies. Add additional filters.
 
 ### Featured Movies
 
@@ -57,17 +57,17 @@ Don't forget to give us access to the repository by either making it public or i
 
 ## Movie and Tv Series screens (movie, tv-series)
 
-- [ ] They display nothing and should display all data about the item
-- [ ] Navigating back should redirect to the correct screen
+- [x] They display nothing and should display all data about the item
+- [x] Navigating back should redirect to the correct screen
 
 ## Top rated screen (tab-top-rated)
 
-- [ ] The list should display items with ratings of >=75
+- [x] The list should display items with ratings of >=75
 - [ ] Some list entries display incorrectly formatted values
 
 ## Favorites screen (tab-favorites)
 
-- [ ] The screen displays two headers - it should display only one
+- [x] The screen displays two headers - it should display only one
 - [ ] Implement the view
 
 ## Refactoring
