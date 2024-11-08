@@ -6,9 +6,16 @@ import TopRatedScreen from '@/screens/top-rated';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {  AppRoutes, routeIconMapping } from '@/config/routes.config';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {  LogBox } from 'react-native';
 import { z } from 'zod';
 
 const Tab = createBottomTabNavigator();
+
+LogBox.ignoreAllLogs(true);  // Suppress all warnings
+
+// Suppress warnings and errors in the console
+console.warn = () => {};
+console.error = () => {};
 
 const envSchema = z.object({
   EXPO_PUBLIC_SERVER_IP: z.string().ip(),
