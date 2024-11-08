@@ -6,8 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Movie } from 'domain/movie';
 import { Suspense, useState, type ReactNode } from 'react';
-import { Button, View, Text, Image } from 'react-native';
+import { Button, View, Text, Image, ScrollView } from 'react-native';
 
+// TODO move to another file
 const DetailsScreen = ({ route }) => {
   const { movie }: { movie: Movie } = route.params;
 
@@ -43,17 +44,22 @@ const HomeScreenContent = () => {
   };
 
   return (
-    <View>
-      <View style={{ marginBottom: 40 }}>
-        <Search />
-      </View>
+    <ScrollView>
+      <View>
+        <View style={{ marginBottom: 40 }}>
+          <Search />
+        </View>
 
-      <FeaturedMovies
-        style={{ marginBottom: 40 }}
-        onMoviePress={handleNavigateToDetails}
-      />
-      {/* <FeaturedTvSeries /> */}
-    </View>
+        <FeaturedMovies
+          style={{ marginBottom: 40 }}
+          onMoviePress={handleNavigateToDetails}
+        />
+        <FeaturedTvSeries
+          style={{ marginBottom: 0 }}
+          onMoviePress={handleNavigateToDetails}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -62,8 +68,16 @@ export default function HomeScreen(): ReactNode {
 
   return (
     <HomeStack.Navigator initialRouteName={'home'}>
-      <HomeStack.Screen name={'home'} component={HomeScreenContent} options={{ title: 'Home' }} />
-      <HomeStack.Screen name="details" component={DetailsScreen} options={{ title: 'About' }} />
+      <HomeStack.Screen
+        name={'home'}
+        component={HomeScreenContent}
+        options={{ title: 'Home' }}
+      />
+      <HomeStack.Screen
+        name="details"
+        component={DetailsScreen}
+        options={{ title: 'About' }}
+      />
     </HomeStack.Navigator>
   );
 }

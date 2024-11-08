@@ -1,3 +1,5 @@
+Add
+
 import { Poster } from '@/ui/poster';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { featuredTvSeries$ } from './state';
@@ -17,7 +19,6 @@ export function FeaturedTvSeries() {
         data={featuredTvSeries}
         keyExtractor={(it) => it.id}
         renderItem={(it) => {
-          console.log(it.item.rating);
           return (
             <Entry
               title={it.item.title}
@@ -46,21 +47,20 @@ const featuredTvSeriesStyles = StyleSheet.create({
 });
 
 function Entry(props) {
-  console.log(props.title);
   return (
     <View style={entryStyles.root}>
       <View style={entryStyles.overlay}>
         <Text style={entryStyles.text}>{props.title}</Text>
-        <Rating style={entryStyles.text} value={props.rating} />
-        <Text style={entryStyles.text}>seasons: {props.seasons.length}</Text>
+        {/* <Rating style={entryStyles.text} value={props.rating} /> */}
+        {/* <Text style={entryStyles.text}>seasons: {props.seasons.length}</Text> */}
       </View>
-      <Poster
+      {/* <Poster
         title={props.title}
         style={entryStyles.poster}
         src={
           'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/2560px-Image_created_with_a_mobile_phone.png'
         }
-      />
+      /> */}
     </View>
   );
 }
@@ -89,3 +89,4 @@ const entryStyles = StyleSheet.create({
     color: 'white',
   },
 });
+

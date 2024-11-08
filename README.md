@@ -32,7 +32,7 @@ Don't forget to give us access to the repository by either making it public or i
 
 - [x] Running `npm start` does not start the app due to errors in the console
 - [x] Bottom tab navigation does not display icons
-- [ ] The app is not styled - make it pretty
+- [x] The app is not styled - make it pretty
 - [x] The console should not display any warning nor errors in general
 
 ## Home screen (tab-home)
@@ -46,8 +46,8 @@ Don't forget to give us access to the repository by either making it public or i
 
 ### Featured Movies
 
-- [ ] The component does not fetch data
-- [ ] Pressing on movie should open the screen with movie details
+- [x] The component does not fetch data
+- [x] Pressing on movie should open the screen with movie details
 
 ### Featured Tv Series
 
