@@ -1,3 +1,4 @@
+import { Movie } from 'domain/movie';
 import {
   View,
   StyleSheet,
@@ -14,24 +15,26 @@ type PosterProps = {
   onFavoritePress: () => void;
   isFavorite: boolean;
   styles?: StyleProp<ViewStyle>;
+  onMoviePress: (movie: Movie) => void; // TODO maybe better to use a state solution
 };
 
 export function Poster(props: PosterProps) {
   return (
-    <View style={[styles.wrapper, props.styles]}>
+    <Pressable
+      style={[styles.wrapper, props.styles]}
+      onPress={props.onMoviePress}
+    >
       {props.onFavoritePress && (
         <Pressable
           style={[
             styles.button,
             props.isFavorite
-              ? {
-                  backgroundColor: 'yellow',
-                }
+              ? { backgroundColor: 'yellow' }
               : { backgroundColor: 'transparent' },
           ]}
           onPress={props.onFavoritePress}
         >
-          {props.isFavorite ? '-' : '+'}
+          <Text>{props.isFavorite ? '-' : '+'}</Text>
         </Pressable>
       )}
       <Image
@@ -40,7 +43,7 @@ export function Poster(props: PosterProps) {
         style={styles.image}
       />
       <Text style={styles.movieTitle}>{props.title}</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -61,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 1,
   },
   image: {
     width: 150,

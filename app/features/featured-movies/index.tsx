@@ -4,12 +4,17 @@ import { movies$ } from './state';
 import { useAtomValue } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { getMoviePoster } from '@/infrastructure/repositories/movie';
+import { Movie } from 'domain/movie';
 
 type Props = {
   style?: any;
+  onMoviePress: (movie: Movie) => void; // TODO maybe better to use a state solution
 };
 
-export function FeaturedMovies({ style }: Props): JSX.Element | null {
+export function FeaturedMovies({
+  style,
+  onMoviePress,
+}: Props): JSX.Element | null {
   const stateLoadable = useAtomValue(loadable(movies$));
 
   switch (stateLoadable.state) {
@@ -19,17 +24,19 @@ export function FeaturedMovies({ style }: Props): JSX.Element | null {
     }
 
     case 'hasData': {
+      
       return (
         <View style={[styles.root, style]}>
           <Text style={styles.title}>Featured Movies</Text>
           <ScrollView horizontal>
-            {stateLoadable.data.map((it, index) => (
+            {stateLoadable.data.map((movie, index) => (
               <Poster
                 key={index}
                 src={getMoviePoster()}
                 isFavorite
-                title={it.title}
-                onFavoritePress={undefined as any}
+                title={movie.title}
+                onMoviePress={() => onMoviePress(movie)}
+                onFavoritePress={() => undefined}
               />
             ))}
           </ScrollView>

@@ -8,7 +8,7 @@ import { AppRoutes, routeIconMapping } from '@/config/routes.config';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { PaperProvider } from 'react-native-paper';
-import { LogBox } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { z } from 'zod';
 import { appTheme } from '@/config/theme.config';
 
@@ -56,7 +56,7 @@ export default function App() {
           <Tab.Screen
             name="tab-home"
             component={HomeScreen}
-            options={{ tabBarLabel: () => null }}
+            options={{ tabBarLabel: () => null, headerShown: false }}
           />
           <Tab.Screen
             name="tab-top-rated"
