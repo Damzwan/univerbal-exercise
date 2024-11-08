@@ -2,6 +2,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
   Pressable,
   StyleProp,
   ViewStyle,
@@ -17,7 +18,7 @@ type PosterProps = {
 
 export function Poster(props: PosterProps) {
   return (
-    <View style={[styles.wrapper, styles.wrapper]}>
+    <View style={[styles.wrapper, props.styles]}>
       {props.onFavoritePress && (
         <Pressable
           style={[
@@ -33,23 +34,41 @@ export function Poster(props: PosterProps) {
           {props.isFavorite ? '-' : '+'}
         </Pressable>
       )}
-      <Image alt={props.title} src={props.src} />
+      <Image
+        alt={props.title}
+        source={{ uri: props.src }}
+        style={styles.image}
+      />
+      <Text style={styles.movieTitle}>{props.title}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {},
+  wrapper: {
+    position: 'relative',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
   button: {
     borderWidth: 2,
     borderColor: 'yellow',
     position: 'absolute',
     top: 10,
     right: 10,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  image: {
+    width: 150,
+    height: 250,
+    resizeMode: 'cover',
+  },
+  movieTitle: {
+    fontSize: 17,
+    fontWeight: '500',
   },
 });

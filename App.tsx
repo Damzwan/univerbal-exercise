@@ -4,18 +4,21 @@ import HomeScreen from '@/screens/home';
 import FavoritesScreen from '@/screens/favorites';
 import TopRatedScreen from '@/screens/top-rated';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {  AppRoutes, routeIconMapping } from '@/config/routes.config';
+import { AppRoutes, routeIconMapping } from '@/config/routes.config';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {  LogBox } from 'react-native';
+
+import { PaperProvider } from 'react-native-paper';
+import { LogBox } from 'react-native';
 import { z } from 'zod';
+import { appTheme } from '@/config/theme.config';
 
 const Tab = createBottomTabNavigator();
 
-LogBox.ignoreAllLogs(true);  // Suppress all warnings
+// LogBox.ignoreAllLogs(true); // Suppress all warnings
 
-// Suppress warnings and errors in the console
-console.warn = () => {};
-console.error = () => {};
+// // Suppress warnings and errors in the console
+// console.warn = () => {};
+// console.error = () => {};
 
 const envSchema = z.object({
   EXPO_PUBLIC_SERVER_IP: z.string().ip(),
@@ -30,32 +33,43 @@ console.info('[app]: ENV', result.data);
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" animated />
+    <PaperProvider theme={appTheme}>
+      <NavigationContainer>
+        <StatusBar style="auto" animated />
 
-      <Tab.Navigator initialRouteName={AppRoutes.Root}  screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-                return <Ionicons name={routeIconMapping[route.name as AppRoutes] as any} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-        <Tab.Screen
-          name="tab-home"
-          component={HomeScreen}
-          options={{ tabBarLabel: () => null }}
-        />
-        <Tab.Screen
-          name="tab-top-rated"
-          component={TopRatedScreen}
-          options={{ tabBarLabel: () => null }}
-        />
-        <Tab.Screen
-          name="tab-favorites"
-          component={FavoritesScreen}
-          options={{ tabBarLabel: () => null }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+        <Tab.Navigator
+          initialRouteName={AppRoutes.Root}
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              return (
+                <Ionicons
+                  name={routeIconMapping[route.name as AppRoutes] as any}
+                  size={size}
+                  color={color}
+                />
+              );
+            },
+            tabBarActiveTintColor: 'tomato',
+            tabBarInactiveTintColor: 'gray',
+          })}
+        >
+          <Tab.Screen
+            name="tab-home"
+            component={HomeScreen}
+            options={{ tabBarLabel: () => null }}
+          />
+          <Tab.Screen
+            name="tab-top-rated"
+            component={TopRatedScreen}
+            options={{ tabBarLabel: () => null }}
+          />
+          <Tab.Screen
+            name="tab-favorites"
+            component={FavoritesScreen}
+            options={{ tabBarLabel: () => null }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

@@ -32,17 +32,26 @@ export async function getMovieByIdQuery(
   return (await request.json()) as Movie;
 }
 
-// TODO: implement
 export async function getFeaturedMoviesQuery(
   signal: AbortSignal,
 ): Promise<Movie[]> {
-  return [];
+  try {
+    const url = new URL('/movies', apiUrl);
+    const request = await fetch(url, { signal });
+    if (!request.ok) return [];
+    const json = (await request.json()) as Movie[];
+    return json;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
 export async function getTopRatedMoviesQuery(): Promise<Movie[]> {
   // TODO: implement on backend side
   try {
     const url = new URL('/movies', apiUrl);
+
     const request = await fetch(url);
     if (!request.ok) return [];
 
@@ -54,4 +63,9 @@ export async function getTopRatedMoviesQuery(): Promise<Movie[]> {
     console.error(err);
     return [];
   }
+}
+
+// TODO make api call instead?
+export function getMoviePoster(): string {
+  return `${apiUrl}/img/poster.jpg`;
 }

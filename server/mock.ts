@@ -1,5 +1,5 @@
 import { User } from 'domain/user';
-
+import path from 'path';
 import express from 'express';
 
 import { corsConfig } from './cors';
@@ -18,6 +18,7 @@ app.use(corsConfig);
 
 const port = 3003;
 
+app.use('/img', express.static(path.join(__dirname, 'img')));
 app.get('/movies', (req, res) => {
   res.json(moviesData.movies);
 });
